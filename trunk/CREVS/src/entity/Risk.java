@@ -4,10 +4,19 @@
  */
 package entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author liuxiaoning
  */
 public class Risk {
+    
+    // Attributes
+    public List<PeriodRisk> periodRisks = new ArrayList<PeriodRisk>();
+    
+    public Risk(){}
+    
     
 }
