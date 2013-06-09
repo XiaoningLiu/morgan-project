@@ -4,7 +4,9 @@
  */
 package ui;
 
+import entity.Trader;
 import java.sql.Connection;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -15,9 +17,10 @@ public class Load extends javax.swing.JFrame {
     /**
      * Creates new form Login
      */
-    private Connection loadcon;
+    private Connection con;
+
     public Load(Connection con) {
-        loadcon = con;
+        this.con = con;
         initComponents();
         setLocationRelativeTo(null);
     }
@@ -107,7 +110,20 @@ public class Load extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-  new Trade(loadcon).setVisible(true);         // TODO add your handling code here:
+        String traderId = jTextField1.getText();
+        Trader trader = new Trader(con, traderId);
+        
+        if (trader.name == null){
+            JOptionPane.showMessageDialog(null, "Please check your UserId", "Notice", JOptionPane.OK_OPTION);
+            return;
+        } else {
+            if (trader.checkPsd(jTextField2.getText())){
+                new Trade(con, trader).setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(null, "Please check your password", "Notice", JOptionPane.OK_OPTION);
+                return;
+            }
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
@@ -138,11 +154,11 @@ public class Load extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-       // java.awt.EventQueue.invokeLater(new Runnable()) {
+        // java.awt.EventQueue.invokeLater(new Runnable()) {
         //    public void run() {
-        //        new Load(loadcon).setVisible(true);
-         //   }
-   //    }
+        //        new Load(con).setVisible(true);
+        //   }
+        //    }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton2;
