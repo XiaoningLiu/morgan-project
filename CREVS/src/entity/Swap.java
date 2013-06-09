@@ -77,6 +77,7 @@ public class Swap {
             rs.close();
             rs = null;
 
+            this.tradeId = autoIncKeyFromApi;
             return autoIncKeyFromApi;
         } catch (SQLException ex) {
             // handle any errors

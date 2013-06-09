@@ -5,6 +5,7 @@
 package ui;
 
 import java.sql.Connection;
+import entity.Trader;
 
 /**
  *
@@ -15,11 +16,17 @@ public class Trade extends javax.swing.JFrame {
     /**
      * Creates new form Trade
      */
-    private Connection tradecon;
-    public Trade(Connection con) {
-        tradecon = con;
+    private Connection con;
+    private Trader trader;
+    public Trade(Connection con, Trader trader) {
+        this.con = con;
+        this.trader = trader;
         initComponents();
         setLocationRelativeTo(null);
+    }
+
+    Trade(Connection con, String traderId) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     /**
@@ -204,11 +211,11 @@ public class Trade extends javax.swing.JFrame {
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         this.setVisible(false);
-        new Load(tradecon).setVisible(true);        // TODO add your handling code here:
+        new Load(con).setVisible(true);        // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-    new TradeCapture(tradecon).setVisible(true);        // TODO add your handling code here:
+    new TradeCapture(con).setVisible(true);        // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
@@ -216,7 +223,7 @@ public class Trade extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-    new TradeCapture(tradecon).setVisible(true);      // TODO add your handling code here:
+    new TradeCapture(con).setVisible(true);      // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
@@ -228,7 +235,7 @@ public class Trade extends javax.swing.JFrame {
         jTable1.setRowSelectionInterval(selectedRow, selectedRow);
          if (evt.getButton() == 1) {// 单击鼠标左键
          if (evt.getClickCount() == 2) {
-        new RiskView(tradecon).setVisible(true);
+        new RiskView(con).setVisible(true);
              System.out.println(selectedRow);
         }        // TODO add your handling code here:
     }//GEN-LAST:event_jTable1MousePressed
