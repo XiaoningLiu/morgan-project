@@ -1,6 +1,7 @@
 package engine;
 
 import java.util.Calendar;
+import java.util.Vector;
 
 
 public class AvgFloatingPrice {
@@ -60,7 +61,17 @@ public class AvgFloatingPrice {
 	}
 	
 	//calculate avgFolatingPrice
-	public static double avgFolatingPrice(int d,int m,int y){
+	/**
+	 * @wrong return type
+	 * @return  0: not changed
+	 * @return -1: no Jan&Feb info
+	 * @return -2: the date is after today
+	 * 
+	 * @param flag:
+	 * 1:	Before pricing start date
+	 * 2:	After pricing start date 
+	 */
+	public static double avgFolatingPrice(int d,int m,int y,int flag){
 		double result=0;
 		
 		//get content of the URL
@@ -88,8 +99,29 @@ public class AvgFloatingPrice {
 		content=content.substring(content.indexOf("<sett>")+6);
 		double FebContractPrice=
 				Double.parseDouble(content.substring(0, 5));
-		System.out.print(JanContractPrice+"\n"+FebContractPrice);
 		
+		//get result!
+		Vector <String> priceList=PriceListOfAMonth.price(m, y);
+		int workday=getWorkdays(m,y).length;
+		int separate=separate(m,y);
+		double sumSettlementPrice=0;
+		for(int i=0;i<3;i++){
+			sumSettlementPrice+=
+					Double.parseDouble(priceList.get(i*2+1));
+		}
+		sumSettlementPrice=Math.round(sumSettlementPrice*100)/100.0; 
+		int former=0;//14 in eg. second doc
+		for(int i=0;i<workday;i++)
+			if(getWorkdays(m,y)[i]<=separate)
+				former++;
+		
+		if(flag==1)
+                        result=(JanContractPrice*former+FebContractPrice*(workday-former))/workday;
+		if(flag==2)
+                        result=(sumSettlementPrice+JanContractPrice
+					*(former-3)+FebContractPrice*(workday-former))/workday;
+		
+		result=Math.round(result*100)/100.0; 
 		return result;
 	}
 	
@@ -110,6 +142,6 @@ public class AvgFloatingPrice {
 		//test separate
 		//System.out.print("\n"+separate(m,y));
 		
-		avgFolatingPrice(7,m,y);
+		System.out.print(avgFolatingPrice(7,m,y,2));
 	}
 }
