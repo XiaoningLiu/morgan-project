@@ -14,6 +14,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import ui.Load;
 // Notice, do not import com.mysql.jdbc.*
 // or you will have problems!
 
@@ -27,6 +28,7 @@ public class CREVS {
     /**
      * @param args the command line arguments
      */
+    
     public static void main(String[] args) {
         try {
             // The newInstance() call is a work around for some
@@ -80,6 +82,8 @@ public class CREVS {
                 stmt = null;
             }
         }
+        new Load(con).setVisible(true);
+        
     }
     
     private static String getDBurlFromFile(String fileName){

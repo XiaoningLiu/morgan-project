@@ -4,6 +4,9 @@
  */
 package ui;
 
+import java.awt.event.KeyEvent;
+import java.sql.Connection;
+
 /**
  *
  * @author dianer
@@ -13,8 +16,11 @@ public class TradeCapture extends javax.swing.JFrame {
     /**
      * Creates new form TradeCapture
      */
-    public TradeCapture() {
+    private Connection tradecapturecon;
+    public TradeCapture(Connection con) {
+        tradecapturecon=con;
         initComponents();
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -79,6 +85,12 @@ public class TradeCapture extends javax.swing.JFrame {
 
         jLabel4.setText("Quantity");
 
+        jTextField3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField3KeyTyped(evt);
+            }
+        });
+
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "BBL" }));
 
         javax.swing.GroupLayout QuantityLayout = new javax.swing.GroupLayout(Quantity);
@@ -108,6 +120,12 @@ public class TradeCapture extends javax.swing.JFrame {
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Price"));
 
         jLabel6.setText("Fixed");
+
+        jTextField4.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField4KeyTyped(evt);
+            }
+        });
 
         jComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "BBL" }));
 
@@ -246,6 +264,11 @@ public class TradeCapture extends javax.swing.JFrame {
         );
 
         jButton1.setText("Submit");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -315,6 +338,32 @@ public class TradeCapture extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox7ActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    this.setVisible(false);        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jTextField3KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyTyped
+    if ((evt.getKeyChar() >= KeyEvent.VK_0 && evt.getKeyChar() <= evt.VK_9)
+                || evt.getKeyChar() == evt.VK_ENTER || evt.getKeyChar() == evt.VK_TAB
+                || evt.getKeyChar() == evt.VK_BACK_SPACE || evt.getKeyChar() == evt.VK_DELETE
+                || evt.getKeyChar() == evt.VK_LEFT || evt.getKeyChar() == evt.VK_RIGHT
+                || evt.getKeyChar() == evt.VK_ESCAPE||evt.getKeyChar() == evt.VK_DECIMAL||evt.getKeyChar() == evt.VK_PERIOD ) {
+            return;
+        }
+        evt.consume();        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField3KeyTyped
+
+    private void jTextField4KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField4KeyTyped
+      if ((evt.getKeyChar() >= KeyEvent.VK_0 && evt.getKeyChar() <= evt.VK_9)
+                || evt.getKeyChar() == evt.VK_ENTER || evt.getKeyChar() == evt.VK_TAB
+                || evt.getKeyChar() == evt.VK_BACK_SPACE || evt.getKeyChar() == evt.VK_DELETE
+                || evt.getKeyChar() == evt.VK_LEFT || evt.getKeyChar() == evt.VK_RIGHT
+                || evt.getKeyChar() == evt.VK_ESCAPE||evt.getKeyChar() == evt.VK_DECIMAL||evt.getKeyChar() == evt.VK_PERIOD) {
+            return;
+        }
+        evt.consume();        // TODO add your handling code here:  // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField4KeyTyped
+
     /**
      * @param args the command line arguments
      */
@@ -343,11 +392,11 @@ public class TradeCapture extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new TradeCapture().setVisible(true);
-            }
-        });
+     //  java.awt.EventQueue.invokeLater(new Runnable() {
+       //     public void run() {
+       //         new TradeCapture().setVisible(true);
+       //     }
+       // });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Quantity;

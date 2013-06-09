@@ -4,6 +4,8 @@
  */
 package ui;
 
+import java.sql.Connection;
+
 /**
  *
  * @author dianer
@@ -13,8 +15,11 @@ public class RiskView extends javax.swing.JFrame {
     /**
      * Creates new form RiskView
      */
-    public RiskView() {
+    private Connection riskviewcon;
+    public RiskView(Connection con) {
+        riskviewcon=con;
         initComponents();
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -58,7 +63,15 @@ public class RiskView extends javax.swing.JFrame {
             new String [] {
                 "Date", "Profit & Loss", "Profit Value"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -84,7 +97,15 @@ public class RiskView extends javax.swing.JFrame {
             new String [] {
                 "Forward Price", "Start", "End", "Period", "Daily Quantity", "Totle"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, true, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane2.setViewportView(jTable2);
 
         jLabel1.setText("Totle :");
@@ -165,11 +186,11 @@ public class RiskView extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new RiskView().setVisible(true);
-            }
-        });
+      //  java.awt.EventQueue.invokeLater(new Runnable() {
+       //     public void run() {
+      //          new RiskView().setVisible(true);
+       //     }
+      //  });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox jComboBox1;
