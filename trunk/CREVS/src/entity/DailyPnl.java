@@ -16,14 +16,14 @@ import java.util.Date;
  * @author liuxiaoning
  */
 public class DailyPnl {
-    
+
     // Atributes
     public int tradeId;
     public Date date;
     public double pnl;
     public double pvToday;
     public double pvYest;
-    
+
     public DailyPnl(int tradeId, Date date, double pnl, double pv1, double pv0){
         this.tradeId = tradeId;
         this.date = date;
@@ -39,9 +39,9 @@ public class DailyPnl {
         this.pvYest = pvyest;
         this.pnl = pvtoday - pvyest;
     }
-    
+
     public void saveToDB(Connection con){
-        // if not saved save to database 
+        // if not saved save to database
         Statement stmt = null;
         ResultSet rs = null;
         try {
@@ -49,13 +49,13 @@ public class DailyPnl {
                     java.sql.ResultSet.CONCUR_UPDATABLE);
             Date date = new Date();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            
+
             // check if existence or not
             stmt.executeQuery("select date from pv where tradeId=" + this.tradeId
                     + " and date='" + sdf.format(this.date) + "'");
             rs = stmt.getResultSet();
             if (rs.next()){
-                // there are the date 
+                // there are the date
                 return;
             }
 
@@ -90,9 +90,9 @@ public class DailyPnl {
                 stmt = null;
             }
         }
-        
-        
-        
-        
+
+
+
+
     }
 }
