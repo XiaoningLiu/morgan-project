@@ -4,8 +4,16 @@
  */
 package ui;
 
+import entity.Swap;
+import entity.Trader;
+import java.awt.event.ItemEvent;
 import java.awt.event.KeyEvent;
 import java.sql.Connection;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -17,8 +25,12 @@ public class TradeCapture extends javax.swing.JFrame {
      * Creates new form TradeCapture
      */
     private Connection tradecapturecon;
-    public TradeCapture(Connection con) {
+    private Trader trader;
+    private Trade trade;
+    public TradeCapture(Connection con,Trader trader,Trade trade) {
         tradecapturecon=con;
+        this.trader=trader;
+        this.trade=trade;
         initComponents();
         setLocationRelativeTo(null);
     }
@@ -202,12 +214,29 @@ public class TradeCapture extends javax.swing.JFrame {
         jLabel10.setText("Pricing Period   from");
 
         jComboBox8.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" }));
+        jComboBox8.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBox8ItemStateChanged(evt);
+            }
+        });
 
         jComboBox9.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022" }));
+        jComboBox9.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBox9ItemStateChanged(evt);
+            }
+        });
 
         jComboBox10.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022" }));
+        jComboBox10.setEnabled(false);
+        jComboBox10.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBox10ItemStateChanged(evt);
+            }
+        });
 
         jComboBox11.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" }));
+        jComboBox11.setEnabled(false);
 
         jLabel11.setText("to");
 
@@ -253,13 +282,14 @@ public class TradeCapture extends javax.swing.JFrame {
                     .addComponent(jComboBox8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jComboBox9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(jComboBox7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jComboBox11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jComboBox10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel11)))
+                        .addComponent(jLabel11))
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel9)
+                        .addComponent(jComboBox7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -339,9 +369,112 @@ public class TradeCapture extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBox7ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-    this.setVisible(false);        // TODO add your handling code here:
+        try {
+            Swap swap = new Swap();
+            swap.traderId = trader.traderId;
+            swap.bookingDate = new Date();
+            swap.buyOrSell = jComboBox1.getSelectedItem().toString();
+            swap.counterparty = jTextField1.toString();
+            swap.fixedPrice = Double.parseDouble(jTextField4.toString());
+            swap.floatingCode = jComboBox5.getSelectedItem().toString();
+            swap.quantity = Integer.parseInt(jTextField3.toString());
+            swap.settleDateSpec = jComboBox6.getSelectedItem().toString();
+            String mounth_start,mounth_end,lastday;
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            mounth_start = stringmounth(jComboBox8.getSelectedItem().toString());    
+            mounth_end = stringmounth(jComboBox11.getSelectedItem().toString());
+            lastday = howmanyday(mounth_end,jComboBox9.getSelectedItem().toString());
+            swap.startDate = sdf.parse(jComboBox9.getSelectedItem().toString()+"-"+mounth_start+"-01");
+            swap.endDate = sdf.parse(jComboBox10.getSelectedItem().toString()+"-"+mounth_end+lastday);
+            swap.tradeId = swap.saveToDB(tradecapturecon);
+            
+            //triger
+            trade.freshTradeTable();
+            
+            this.setVisible(false);        // TODO add your handling code here:
+        } catch (ParseException ex) {
+            Logger.getLogger(TradeCapture.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
-
+ private String stringmounth(String smounth) { 
+     String m;
+     switch (smounth)
+        {
+            case "Jan":
+                    m = "01";
+            case "Feb":
+                     m = "02";
+            case "Mar":
+                     m = "03";                  
+            case "Apr":
+                     m = "04";
+            case "May":
+                     m = "05";
+            case "Jun":
+                     m = "06";
+            case "Jul":
+                     m = "07";
+            case "Aug":
+                     m = "08";
+            case "Sep":
+                     m = "09";
+            case "Oct":
+                     m = "10";
+            case "Nov":
+                     m = "11";
+            case "Dec":
+                     m = "12";  
+            default:
+                     m ="00";
+                    
+        }
+     return m;
+     
+     
+ }
+  private String howmanyday(String mounth,String year) { 
+     String lastday;
+     boolean isleapyear = isLeapYear(Integer.parseInt(year));
+     switch (mounth)
+        {
+            case "01":
+            case "03":
+            case "05":
+            case "07":
+            case "08":
+            case "10":
+            case "12":
+                    lastday = "-31";
+            case "04":
+            case "06":
+            case "09":
+            case "11":
+                    lastday = "-30";
+            case "02":
+            {
+                if(isleapyear)
+                    lastday = "-29";
+                else
+                    lastday = "-28";
+                
+            }
+            default:
+                     lastday ="-00";
+                    
+        }
+     return lastday;
+     
+     
+ }
+  public static boolean isLeapYear(int y) {
+		if(y%400==0)
+			return true;
+		else if(y%100==0)
+			return false;
+		else if(y%4==0)
+			return true;
+		return false;
+	}
     private void jTextField3KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyTyped
     if ((evt.getKeyChar() >= KeyEvent.VK_0 && evt.getKeyChar() <= evt.VK_9)
                 || evt.getKeyChar() == evt.VK_ENTER || evt.getKeyChar() == evt.VK_TAB
@@ -363,6 +496,18 @@ public class TradeCapture extends javax.swing.JFrame {
         }
         evt.consume();        // TODO add your handling code here:  // TODO add your handling code here:
     }//GEN-LAST:event_jTextField4KeyTyped
+
+    private void jComboBox8ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox8ItemStateChanged
+       jComboBox11.setSelectedItem(this.jComboBox8.getSelectedItem());//　= ItemEvent.SELECTED // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox8ItemStateChanged
+
+    private void jComboBox10ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox10ItemStateChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox10ItemStateChanged
+
+    private void jComboBox9ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox9ItemStateChanged
+       jComboBox10.setSelectedItem(this.jComboBox9.getSelectedItem());  // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox9ItemStateChanged
 
     /**
      * @param args the command line arguments
