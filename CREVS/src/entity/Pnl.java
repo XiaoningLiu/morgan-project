@@ -17,20 +17,20 @@ import java.util.List;
  * @author liuxiaoning
  */
 public class Pnl {
-    
+
     // Attributes
-    public List<DailyPnl> dailyPnls = new ArrayList<>();
     public int tradeId;
-    
+    public List<DailyPnl> dailyPnls= new ArrayList<>();
+
     public Pnl(){}
-    
+
     public Pnl(Connection con, int tradeId){
         // get all Pnl with the tradeId
         Statement stmt = null;
         ResultSet rs = null;
         try {
             stmt = con.createStatement();
-            rs = stmt.executeQuery("SELECT date, pv FROM pv where tradeid=" + 
+            rs = stmt.executeQuery("SELECT date, pv FROM pv where tradeid=" +
                     tradeId + " order by date DESC");
             rs = stmt.getResultSet();
 
@@ -42,19 +42,19 @@ public class Pnl {
             }
             rs.close();
             rs = null;
-            
+
             if (dateResults.size() > 1){
                 for (int i = 0; i < dateResults.size() - 1; i++){
-                 
+
                     long timeToday = dateResults.get(i).getTime();
                     long timeYes = dateResults.get(i+1).getTime();
-                    
+
                     if ( timeToday == timeYes + 86400000){
-                        DailyPnl dailyPnl = new DailyPnl(tradeId, 
-                            dateResults.get(i), pvResults.get(i), 
+                        DailyPnl dailyPnl = new DailyPnl(tradeId,
+                            dateResults.get(i), pvResults.get(i),
                             pvResults.get(i+1));
                        dailyPnls.add(dailyPnl);
-                    } 
+                    }
                 }
             }
         } catch (SQLException ex) {
@@ -82,27 +82,27 @@ public class Pnl {
                 stmt = null;
             }
         }
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
-    
+
     public void saveToDB(Connection con){
         // save to table crevs.pv
         for(int i = 0; i < dailyPnls.size(); i++){
             dailyPnls.get(i).saveToDB(con);
         }
     }
-    
-    
+
+
 }
