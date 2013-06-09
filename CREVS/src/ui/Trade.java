@@ -41,7 +41,7 @@ public class Trade extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }
 
-    private void freshTradeTable() {
+    public void freshTradeTable() {
         // clean the data in the table
         tradeModel.getDataVector().removeAllElements();
         tradeModel.fireTableDataChanged();
