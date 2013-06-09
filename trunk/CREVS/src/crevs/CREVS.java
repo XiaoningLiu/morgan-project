@@ -4,6 +4,10 @@
  */
 package crevs;
 
+import entity.DailyPnl;
+import entity.Pnl;
+import entity.Swap;
+import entity.Trader;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -14,7 +18,9 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import ui.Load;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 // Notice, do not import com.mysql.jdbc.*
 // or you will have problems!
 
@@ -28,8 +34,7 @@ public class CREVS {
     /**
      * @param args the command line arguments
      */
-    
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ParseException {
         try {
             // The newInstance() call is a work around for some
             // broken Java implementations
@@ -43,10 +48,9 @@ public class CREVS {
         Statement stmt = null;
         ResultSet rs = null;
         try {
-            con =
-                    DriverManager.getConnection(getDBurlFromFile("dbconfig"));
-
-            // Do something with the Connection
+            con = DriverManager.getConnection(getDBurlFromFile("dbconfig"));
+           
+            /*/ Test database connection
             stmt = con.createStatement();
             rs = stmt.executeQuery("SELECT * FROM user");
             if (stmt.execute("SELECT * FROM user")) {
@@ -56,6 +60,7 @@ public class CREVS {
             while ( rs.next() ){
                 System.out.println(rs.getString("psd"));
             }
+            */
 
         } catch (SQLException ex) {
             // handle any errors
@@ -82,7 +87,14 @@ public class CREVS {
                 stmt = null;
             }
         }
-        new Load(con).setVisible(true);
+        
+        // here to open the login window  
+        Pnl pnl = new Pnl(con, 1);
+        for (int i = 0; i < pnl.dailyPnls.size(); i++){
+            System.out.print(pnl.dailyPnls.get(i).pnl);
+            //System.out.print(pnl.dailyPnls.get(i).date.getTime());
+            System.out.println(pnl.dailyPnls.get(i).date);
+        }
         
     }
     
