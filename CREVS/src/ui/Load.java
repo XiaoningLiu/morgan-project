@@ -119,6 +119,7 @@ public class Load extends javax.swing.JFrame {
         } else {
             if (trader.checkPsd(jTextField2.getText())){
                 new Trade(con, trader).setVisible(true);
+                this.setVisible(false);
             } else {
                 JOptionPane.showMessageDialog(null, "Please check your password", "Notice", JOptionPane.OK_OPTION);
                 return;

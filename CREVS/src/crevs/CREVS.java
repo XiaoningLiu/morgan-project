@@ -86,6 +86,8 @@ public class CREVS {
         }
         new Load(con).setVisible(true);
         
+        double a = Double.parseDouble("12.1");
+        System.out.println(a);
     }
     
     private static String getDBurlFromFile(String fileName){

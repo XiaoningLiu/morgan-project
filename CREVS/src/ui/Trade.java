@@ -6,7 +6,6 @@ package ui;
 
 import java.sql.Connection;
 import entity.Trader;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -29,7 +28,7 @@ public class Trade extends javax.swing.JFrame {
         this.tradeModel = new DefaultTableModel(
                 new Object[][]{},
                 new String[]{
-            "BookingDate", "TradeId", "CounberParty", "BuyOrSell",
+            "BookingDate", "TradeId", "CounberParty", "BuyOrSell","fixedPrice",
             "FloatingQuote", "Quantity", "PricingPeriod", "SettleMentDataSpe"
         });      
         
@@ -63,6 +62,7 @@ public class Trade extends javax.swing.JFrame {
                     rs.getString("tradeid"),
                     rs.getString("counterparty"),
                     rs.getString("buyorsell"),
+                    rs.getString("fixedprice"),
                     rs.getString("floatingquotecode"),
                     rs.getString("quantity"),
                     rs.getString("pricingperiodstart") + " ~ " 
@@ -287,7 +287,7 @@ public class Trade extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        new TradeCapture(con).setVisible(true);        // TODO add your handling code here:
+        new TradeCapture(con, trader, this).setVisible(true);        // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
@@ -295,7 +295,7 @@ public class Trade extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        new TradeCapture(con).setVisible(true);      // TODO add your handling code here:
+        new TradeCapture(con, trader, this).setVisible(true);      // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
