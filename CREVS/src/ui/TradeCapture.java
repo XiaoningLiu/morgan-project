@@ -374,10 +374,10 @@ public class TradeCapture extends javax.swing.JFrame {
             swap.traderId = trader.traderId;
             swap.bookingDate = new Date();
             swap.buyOrSell = jComboBox1.getSelectedItem().toString();
-            swap.counterparty = jTextField1.toString();
-            swap.fixedPrice = Double.parseDouble(jTextField4.toString());
+            swap.counterparty = jTextField1.getText();
+            swap.fixedPrice = Double.parseDouble(jTextField4.getText());
             swap.floatingCode = jComboBox5.getSelectedItem().toString();
-            swap.quantity = Integer.parseInt(jTextField3.toString());
+            swap.quantity = Integer.parseInt(jTextField3.getText());
             swap.settleDateSpec = jComboBox6.getSelectedItem().toString();
             String mounth_start,mounth_end,lastday;
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -397,37 +397,32 @@ public class TradeCapture extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton1ActionPerformed
  private String stringmounth(String smounth) { 
-     String m;
-     switch (smounth)
-        {
-            case "Jan":
+     String m = "00";
+     if(smounth.equals("Jan")) 
                     m = "01";
-            case "Feb":
-                     m = "02";
-            case "Mar":
-                     m = "03";                  
-            case "Apr":
-                     m = "04";
-            case "May":
-                     m = "05";
-            case "Jun":
-                     m = "06";
-            case "Jul":
-                     m = "07";
-            case "Aug":
-                     m = "08";
-            case "Sep":
-                     m = "09";
-            case "Oct":
-                     m = "10";
-            case "Nov":
-                     m = "11";
-            case "Dec":
-                     m = "12";  
-            default:
-                     m ="00";
-                    
-        }
+     if(smounth.equals("Feb")) 
+                    m = "02";
+     if(smounth.equals("May")) 
+                    m = "03";
+     if(smounth.equals("Apr")) 
+                    m = "04";
+     if(smounth.equals("May")) 
+                    m = "05";
+     if(smounth.equals("Jun")) 
+                    m = "06";
+     if(smounth.equals("Jul")) 
+                    m = "07";
+     if(smounth.equals("Aug")) 
+                    m = "08";
+     if(smounth.equals("Sep")) 
+                    m = "09";
+     if(smounth.equals("Oct")) 
+                    m = "10";
+     if(smounth.equals("Nov")) 
+                    m = "11";
+     if(smounth.equals("Dec")) 
+                    m = "12";
+    
      return m;
      
      
@@ -435,22 +430,24 @@ public class TradeCapture extends javax.swing.JFrame {
   private String howmanyday(String mounth,String year) { 
      String lastday;
      boolean isleapyear = isLeapYear(Integer.parseInt(year));
-     switch (mounth)
+     switch (Integer.parseInt(mounth))
         {
-            case "01":
-            case "03":
-            case "05":
-            case "07":
-            case "08":
-            case "10":
-            case "12":
+            case 1:
+            case 3:
+            case 5:
+            case 7:
+            case 8:
+            case 10:
+            case 12:
                     lastday = "-31";
-            case "04":
-            case "06":
-            case "09":
-            case "11":
+                break;
+            case 4:
+            case 6:
+            case 9:
+            case 11:
                     lastday = "-30";
-            case "02":
+                break;
+            case 2:
             {
                 if(isleapyear)
                     lastday = "-29";
@@ -458,6 +455,7 @@ public class TradeCapture extends javax.swing.JFrame {
                     lastday = "-28";
                 
             }
+                break;
             default:
                      lastday ="-00";
                     
