@@ -1,0 +1,43 @@
+<mockup version="1.0" skin="sketch" measuredW="799" measuredH="577" mockupW="600" mockupH="551">
+  <controls>
+    <control controlID="0" controlTypeID="com.balsamiq.mockups::TitleWindow" x="199" y="26" w="600" h="551" measuredW="450" measuredH="400" zOrder="0" locked="false" isInGroup="-1">
+      <controlProperties>
+        <bottomheight>2</bottomheight>
+        <close>true</close>
+        <maximizeRestore>false</maximizeRestore>
+        <minimize>true</minimize>
+        <text>Risk%20Viewer</text>
+      </controlProperties>
+    </control>
+    <control controlID="1" controlTypeID="com.balsamiq.mockups::FieldSet" x="199" y="328" w="600" h="249" measuredW="200" measuredH="170" zOrder="1" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Risk%20Exposures</text>
+      </controlProperties>
+    </control>
+    <control controlID="2" controlTypeID="com.balsamiq.mockups::FieldSet" x="202" y="50" w="597" h="278" measuredW="200" measuredH="170" zOrder="2" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Profit%20%26%20Loss</text>
+      </controlProperties>
+    </control>
+    <control controlID="3" controlTypeID="com.balsamiq.mockups::DataGrid" x="199" y="343" w="595" h="196" measuredW="402" measuredH="24" zOrder="3" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Forward%20Type%20%5E%2C%20Start%2C%20End%2C%20Period%2CDaily%20Quantity%2CTotle</text>
+      </controlProperties>
+    </control>
+    <control controlID="4" controlTypeID="com.balsamiq.mockups::Label" x="635" y="548" w="-1" h="-1" measuredW="39" measuredH="21" zOrder="4" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Totle</text>
+      </controlProperties>
+    </control>
+    <control controlID="5" controlTypeID="com.balsamiq.mockups::TextInput" x="715" y="546" w="-1" h="-1" measuredW="79" measuredH="26" zOrder="5" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Some%20text</text>
+      </controlProperties>
+    </control>
+    <control controlID="8" controlTypeID="com.balsamiq.mockups::DataGrid" x="206" y="65" w="588" h="263" measuredW="247" measuredH="24" zOrder="6" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Date%20%5E%2CProfit%20%26%20Loss%2CFurture%20Value</text>
+      </controlProperties>
+    </control>
+  </controls>
+</mockup>

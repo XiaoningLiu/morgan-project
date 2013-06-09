@@ -1,0 +1,49 @@
+<mockup version="1.0" skin="sketch" measuredW="1250" measuredH="678" mockupW="1250" mockupH="678">
+  <controls>
+    <control controlID="0" controlTypeID="com.balsamiq.mockups::TitleWindow" x="0" y="0" w="1248" h="572" measuredW="450" measuredH="400" zOrder="0" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Commodities%20Risk%20Exposure%20and%20Valuation%20System</text>
+      </controlProperties>
+    </control>
+    <control controlID="1" controlTypeID="com.balsamiq.mockups::DataGrid" x="0" y="130" w="1250" h="396" measuredW="1014" measuredH="24" zOrder="1" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Booking%20Date%5E%2C%20Trade%20ID%2C%20%uF09F%uF09F%uF09FCounterparty%20Name%2CBuy%20or%20Sell%2C%20Fixed%20Price%2C%uF09FFloating%20Quote%20Code%2CQuantity%2C%uF09FPricing%20Period%2C%uF09FSettlement%20Date%20Specifications</text>
+      </controlProperties>
+    </control>
+    <control controlID="3" controlTypeID="com.balsamiq.mockups::FieldSet" x="0" y="49" w="1248" h="81" measuredW="200" measuredH="170" zOrder="2" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Search</text>
+      </controlProperties>
+    </control>
+    <control controlID="4" controlTypeID="com.balsamiq.mockups::Label" x="15" y="78" w="-1" h="-1" measuredW="61" measuredH="21" zOrder="3" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Trade%20ID</text>
+      </controlProperties>
+    </control>
+    <control controlID="5" controlTypeID="com.balsamiq.mockups::MenuBar" x="2" y="20" w="1244" h="29" measuredW="206" measuredH="29" zOrder="4" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Function%2CTrade%2C%20Help</text>
+      </controlProperties>
+    </control>
+    <control controlID="6" controlTypeID="com.balsamiq.mockups::Menu" x="365" y="600" w="-1" h="-1" measuredW="150" measuredH="78" zOrder="5" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Configuration%0ALogout%0A%3D%0AExit</text>
+      </controlProperties>
+    </control>
+    <control controlID="7" controlTypeID="com.balsamiq.mockups::TextInput" x="113" y="76" w="125" h="-1" measuredW="79" measuredH="26" zOrder="6" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Some%20text</text>
+      </controlProperties>
+    </control>
+    <control controlID="8" controlTypeID="com.balsamiq.mockups::Button" x="1163" y="63" w="-1" h="-1" measuredW="70" measuredH="28" zOrder="7" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Search</text>
+      </controlProperties>
+    </control>
+    <control controlID="9" controlTypeID="com.balsamiq.mockups::Button" x="1163" y="99" w="-1" h="-1" measuredW="74" measuredH="28" zOrder="8" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Refresh</text>
+      </controlProperties>
+    </control>
+  </controls>
+</mockup>
