@@ -4,6 +4,10 @@
  */
 package entity;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 /**
  *
  * @author liuxiaoning
@@ -11,5 +15,18 @@ package entity;
 public class Pnl {
     
     // Attributes
-    List<int> a = New List();
+    public List<DailyPnl> a = new ArrayList<>();
+    public int tradeId;
+    
+    public Pnl(){
+        // default empty 
+    }
+    
+    public Pnl(Con con, int tradeId){
+        // get all Pnl with the tradeId
+    }
+    
+    public saveToDB(Con con){
+        // save to table crevs.pv
+    }
 }
