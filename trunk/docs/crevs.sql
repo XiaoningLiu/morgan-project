@@ -36,7 +36,7 @@ create table pv
    date                 date not null,
    tradeid              int,
    pv                   numeric(7,2),
-   primary key (date)
+   primary key (date, tradeid)
 );
 
 /*==============================================================*/
