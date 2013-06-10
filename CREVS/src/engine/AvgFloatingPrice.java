@@ -1,5 +1,4 @@
-﻿package engine;
-
+package engine;
 
 import java.util.Calendar;
 import java.util.Vector;
@@ -106,9 +105,13 @@ public class AvgFloatingPrice {
 		int workday=getWorkdays(m,y).length;
 		int separate=separate(m,y);
 		double sumSettlementPrice=0;
-		for(int i=0;i<3;i++){
-			sumSettlementPrice+=
-					Double.parseDouble(priceList.get(i*2+1));
+		int parameter1=0;//to record enterprice number
+		for(int i=0;i<priceList.size()/2;i++){
+			if(Integer.parseInt(priceList.get(i*2))<d){
+				parameter1++;
+				sumSettlementPrice+=
+						Double.parseDouble(priceList.get(i*2+1));
+			}
 		}
 		sumSettlementPrice=Math.round(sumSettlementPrice*100)/100.0; 
 		int former=0;//14 in eg. second doc
@@ -117,24 +120,23 @@ public class AvgFloatingPrice {
 				former++;
 		
 		if(flag==1)
-			System.out.print("("+JanContractPrice
-					+"*"+(former)+"+"+FebContractPrice+"*"
-					+(workday-former)+")/"+workday);
-		if(flag==2)
-			System.out.print("("+sumSettlementPrice+"+"
-					+JanContractPrice
-					+"*"+(former-3)+"+"+FebContractPrice+"*"
-					+(workday-former)+")/"+workday);
-		
-		
+                        result=(JanContractPrice*former+FebContractPrice*(workday-former))/workday;
+		if(flag==2){
+                    if(parameter1<former)
+                        result=(sumSettlementPrice+JanContractPrice
+					*(former-parameter1)+FebContractPrice*(workday-former))/workday;
+                    else
+                        result=(sumSettlementPrice+FebContractPrice*(workday-parameter1))/workday;
+		}
+		result=Math.round(result*100)/100.0; 
 		return result;
 	}
 	
 	//main for test
 	public static void main(String[] args) {
 		//initialize month&year
-		int m=12;
-		int y=2006;
+		int m=6;
+		int y=2013;
 		
 		//find all work days of a month
 		/*
@@ -145,8 +147,8 @@ public class AvgFloatingPrice {
 		 */
 		
 		//test separate
-		System.out.print("\n"+separate(m,y));
+		//System.out.print("\n"+separate(m,y));
 		
-		//avgFolatingPrice(7,m,y,2);
+		System.out.print(avgFolatingPrice(7,m,y,2));
 	}
 }
