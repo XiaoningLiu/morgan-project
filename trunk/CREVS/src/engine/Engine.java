@@ -7,6 +7,7 @@ package engine;
 import entity.Swap;
 import entity.Pnl;
 import entity.DailyPnl;
+import java.util.List;
 import java.util.Date; 
 import java.util.Calendar; 
 import java.sql.Connection;
@@ -21,26 +22,42 @@ public class Engine {
     }
     
     public static Pnl calPnl(Swap swap){
-        Pnl result=new Pnl(con, swap.tradeId);
+        //Pnl result=new Pnl(con, swap.tradeId);
+        Pnl result=new Pnl();
+        
+        int least=5;//least repeat time
         Date now=new Date();
         Calendar calNow=Calendar.getInstance();
         calNow.setTime(now);
         while(true){
+            least--;
             //get d,m,y
             int d=calNow.get(Calendar.DATE);
-            int m=calNow.get(Calendar.MONTH);
+            int m=calNow.get(Calendar.MONTH)+1;
             int y=calNow.get(Calendar.YEAR);
             
             //get avg floating price:
             double AFP=AvgFloatingPrice.avgFolatingPrice(d, m, y, avgCalWay(now,swap.startDate));
-            System.out.print(AFP);
-            if(AFP<=0)break;
+            if(AFP<=0&&least<=0)break;//AFP:0.-1.-2 means sth. is wrong, you can check the info in AvgFloatingPrice.java
             
-            //use expression to calculate
-            int bos=1;//buy or sell
-            if(swap.buyOrSell.equals("sell"))bos=-1;
-            double PV=bos*(swap.fixedPrice-AFP)*swap.quantity;
-            
+            if(AFP>0){
+                //use expression to calculate
+                int bos=1;//buy or sell
+                if(swap.buyOrSell.equals("sell"))bos=-1;
+                double PV=bos*(swap.fixedPrice-AFP)*swap.quantity;
+
+                //add DailyPnl to result
+                DailyPnl DP=new DailyPnl(swap.tradeId,now,PV,PV);
+                result.dailyPnls.add(DP);
+
+                //change Pnl in result's dailyPnls
+                int size=result.dailyPnls.size();
+                if(size>1){
+                    result.dailyPnls.get(size-2).pvYest=PV;
+                    result.dailyPnls.get(size-2).pnl=result.dailyPnls.get(size-2).pvToday-PV;
+                }
+
+            }
             //go to former day
             now=yesterdayDate(now);
             calNow.setTime(now);
@@ -64,6 +81,44 @@ public class Engine {
     }
     //main for test
     public static void main(String[] args) {
+        
+        //initialize a swap for test
+        Swap swap=new Swap();
+        //tradeId:
+        swap.tradeId=1;
+        //startDate:
+        Calendar FirstDate = Calendar.getInstance();
+        FirstDate.set(Calendar.DATE, 1);// 设为当前月的1号
+        swap.startDate=FirstDate.getTime();
+        //endDate:
+        Calendar EndDate = Calendar.getInstance();
+        EndDate.set(Calendar.DATE, 30);// 设为当前月的30号
+        swap.endDate=EndDate.getTime();
+        //fixed price:
+        swap.fixedPrice=99;
+        //buy/sell:
+        swap.buyOrSell="sell";
+        //quantity:
+        swap.quantity=80;
+        
+        //test:
+        Pnl PnlTest=calPnl(swap);
+        List<DailyPnl> DailyPnlTest=PnlTest.dailyPnls;
+        for(int i=0;i<DailyPnlTest.size();i++)
+        {
+            //set format
+            //date
+            Calendar c=Calendar.getInstance();
+            c.setTime(DailyPnlTest.get(i).date);
+            String Date=c.get(Calendar.YEAR)+"/"+(c.get(Calendar.MONTH)+1)+"/"+c.get(Calendar.DATE);
+            //pnl
+            double pnl=Math.round(DailyPnlTest.get(i).pnl*100)/100.0;
+            //pv
+            double PV=Math.round(DailyPnlTest.get(i).pvToday*100)/100.0;
+            
+            
+            System.out.println(Date+"\t"+pnl+"\t"+PV);
+        }
         
     }
     
