@@ -122,4 +122,106 @@ public class Engine {
         
     }
     
+        
+    public Risk calRisk(Swap swap){
+        Risk risk = new Risk();
+        
+        // get daily quantity
+        double dailyQuantity = swap.quantity / getIntervalDays(
+                swap.startDate, swap.endDate);
+        
+        // get all months from trade start to end period
+        List<Date> firstDays = new ArrayList<>();
+        firstDays.add(swap.startDate);
+        Date tmpDate = getNextMonFirstDay(swap.startDate);
+        while (tmpDate.before(swap.endDate)){
+            firstDays.add(tmpDate);
+            tmpDate = getNextMonFirstDay(tmpDate);
+        }
+        
+        // get partition day for every month
+        List<Date> partitionDays = new ArrayList<>();
+        for (int i = 0; i < firstDays.size(); i++){
+            partitionDays.add(getPartitionDay(firstDays.get(i)));
+        }
+        
+        /* get time periods */
+        // first period
+        Date startDate = getThisMonFirstDay(partitionDays.get(0));
+        Date endDate = partitionDays.get(0);
+        String period = getNextMonthString(endDate);
+        PeriodRisk tmpPeriodRisk = new PeriodRisk(swap.floatingCode,
+                startDate, endDate, period, dailyQuantity);
+        risk.periodRisks.add(tmpPeriodRisk);
+        
+        for (int i = 0; i < partitionDays.size() - 1; i ++){
+            startDate = getNextDay(partitionDays.get(i));
+            endDate = partitionDays.get(i + 1);
+            period = getNextMonthString(endDate);
+            tmpPeriodRisk = new PeriodRisk(swap.floatingCode,
+                startDate, endDate, period, dailyQuantity);
+            risk.periodRisks.add(tmpPeriodRisk);
+        }
+        
+        // last period
+        startDate = getNextDay(partitionDays.get(partitionDays.size() - 1));
+        endDate = getThisMonLastDay(partitionDays.get(partitionDays.size() - 1));
+        period = getNextMonthString(getNextMonFirstDay(endDate));
+        tmpPeriodRisk = new PeriodRisk(swap.floatingCode,
+            startDate, endDate, period, dailyQuantity);
+        risk.periodRisks.add(tmpPeriodRisk);
+        
+        return risk;
+    }
+    
+    private Date getNextMonFirstDay(Date date){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.set(Calendar.DATE, 1);
+        cal.add(Calendar.MONTH, 1);
+        return cal.getTime();
+    }
+    private Date getThisMonFirstDay(Date date){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.set(Calendar.DATE, 1);
+        return cal.getTime();
+    }
+    private Date getThisMonLastDay(Date date){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.set(Calendar.DAY_OF_MONTH, 1);
+        cal.add(Calendar.MONTH, 1);
+        cal.add(Calendar.DAY_OF_MONTH, -1);
+        return cal.getTime();
+    }
+    private Date getNextDay(Date date){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.DAY_OF_MONTH, 1);
+        return cal.getTime();
+    }
+    private String getNextMonthString(Date date){
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM-yy", Locale.ENGLISH);
+        return sdf.format(getNextMonFirstDay(date));
+    }
+    private double getIntervalDays(Date start, Date end){
+        long interval = end.getTime() - start.getTime();
+        
+        //return Math.round(endCal.compareTo(startCal) / 1000.0 / 3600.0 / 24.0 );
+        return Math.abs(interval / 1000 / 3600 / 24) + 1;
+    }
+    // This method only use the month and yesr from parameter
+    private Date getPartitionDay(Date yearMonth){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(yearMonth);
+        
+        int year = cal.get(Calendar.YEAR);
+        int mon = cal.get(Calendar.MONTH);
+        int partitionDay = AvgFloatingPrice.separate(mon, year);
+        
+        cal.set(Calendar.DAY_OF_MONTH, partitionDay);
+        return cal.getTime();
+    }
+    
 }
