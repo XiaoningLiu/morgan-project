@@ -4,11 +4,19 @@
  */
 package ui;
 
+import engine.Engine;
+import entity.Pnl;
+import entity.Risk;
+import entity.Swap;
 import java.sql.Connection;
 import entity.Trader;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -23,8 +31,9 @@ public class Trade extends javax.swing.JFrame {
     private Connection con;
     private Trader trader;
     private DefaultTableModel tradeModel;
+    private List<Swap> swaps;
 
-    public Trade(Connection con, Trader trader) {
+    public Trade(Connection con, Trader trader) throws ParseException {
         this.tradeModel = new DefaultTableModel(
                 new Object[][]{},
                 new String[]{
@@ -41,10 +50,13 @@ public class Trade extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }
 
-    public void freshTradeTable() {
+    public void freshTradeTable() throws ParseException {
         // clean the data in the table
         tradeModel.getDataVector().removeAllElements();
         tradeModel.fireTableDataChanged();
+        
+        swaps = new ArrayList<>();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         
         // get data from database
         Statement stmt = null;
@@ -69,6 +81,21 @@ public class Trade extends javax.swing.JFrame {
                         + rs.getString("pricingperiodend"),
                     rs.getString("settlementspecification")
                 });
+                
+                // update 
+                Swap swap = new Swap();
+                swap.bookingDate = sdf.parse(rs.getString("bookingdate"));
+                swap.tradeId = Integer.parseInt( rs.getString("tradeid") );
+                swap.counterparty = rs.getString("counterparty");
+                swap.buyOrSell = rs.getString("buyorsell");
+                swap.fixedPrice = Double.parseDouble( rs.getString("fixedprice") );
+                swap.floatingCode = rs.getString("floatingquotecode");
+                swap.quantity = Integer.parseInt(rs.getString("quantity"));
+                swap.startDate = sdf.parse(rs.getString("pricingperiodstart"));
+                swap.endDate = sdf.parse(rs.getString("pricingperiodend"));
+                swap.settleDateSpec = rs.getString("settlementspecification");
+                swap.traderId = this.trader.traderId;
+                swaps.add(swap);
             }
 
         } catch (SQLException ex) {
@@ -306,8 +333,12 @@ public class Trade extends javax.swing.JFrame {
         jTable1.setRowSelectionInterval(selectedRow, selectedRow);
         if (evt.getButton() == 1) {// 单击鼠标左键
             if (evt.getClickCount() == 2) {
-                new RiskView(con).setVisible(true);
-                System.out.println(selectedRow);
+                Engine engine = new Engine(con);
+                Swap swap = swaps.get(selectedRow);   
+                new RiskView(con, swap).setVisible(true);
+                
+                //System.out.println(selectedRow);
+                //System.out.print(swap.startDate);
             }        // TODO add your handling code here:
     }//GEN-LAST:event_jTable1MousePressed
     }

@@ -4,7 +4,14 @@
  */
 package ui;
 
+import engine.Engine;
+import entity.Pnl;
+import entity.Risk;
+import entity.Swap;
 import java.sql.Connection;
+import java.text.SimpleDateFormat;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -15,11 +22,32 @@ public class RiskView extends javax.swing.JFrame {
     /**
      * Creates new form RiskView
      */
-    private Connection riskviewcon;
-    public RiskView(Connection con) {
-        riskviewcon=con;
+    private Connection con;
+    private Swap swap;
+    private DefaultTableModel pnlModel;
+    private DefaultTableModel riskModel;
+    private Engine engine;
+    public RiskView(Connection con, Swap swap) {
+        this.pnlModel = new DefaultTableModel(
+                new Object[][]{},
+                new String[]{
+            "Date", "Profit & Loss", "Future Value"
+        });
+        this.riskModel = new DefaultTableModel(
+                new Object[][]{},
+                new String[]{
+            "Forward Type", "Start", "End", "Period", "Daily Quantity", "Totle"
+        }); 
+        this.swap = swap;
+        this.con=con;
+        this.engine = new Engine(con);
         initComponents();
         setLocationRelativeTo(null);
+        jTable1.setModel(pnlModel);
+        jTable2.setModel(riskModel);
+        freshRiskTable();
+        //freshPnlTable();
+        jTextField1.setText("" + swap.quantity);
     }
 
     /**
@@ -34,6 +62,7 @@ public class RiskView extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
@@ -74,15 +103,29 @@ public class RiskView extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jTable1);
 
+        jButton1.setText("Update");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 717, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton1))
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Risk Exposures"));
@@ -112,13 +155,18 @@ public class RiskView extends javax.swing.JFrame {
 
         jTextField1.setEnabled(false);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "USD", "CNY" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "BBL" }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 717, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
@@ -131,13 +179,13 @@ public class RiskView extends javax.swing.JFrame {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 11, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -152,11 +200,21 @@ public class RiskView extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        freshPnlTable();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -192,7 +250,50 @@ public class RiskView extends javax.swing.JFrame {
        //     }
       //  });
     }
+    
+    private void freshPnlTable(){  
+        Pnl pnl = engine.calPnl(swap);
+        
+        pnlModel.getDataVector().removeAllElements();
+        pnlModel.fireTableDataChanged();
+        
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        
+        for (int i = 0; i < pnl.dailyPnls.size(); i++){
+            pnlModel.insertRow(pnlModel.getRowCount(), new Object[] {
+                    sdf.format( pnl.dailyPnls.get(i).date ),
+                    Math.round( pnl.dailyPnls.get(i).pnl * 100) / 100.0,
+                    Math.round( pnl.dailyPnls.get(i).pvToday * 100) / 100.0,
+                });
+        }
+        
+        jTable1.setModel(pnlModel);
+    }
+    
+    private void freshRiskTable(){
+        Risk risk = engine.calRisk(swap);
+        
+        riskModel.getDataVector().removeAllElements();
+        riskModel.fireTableDataChanged();
+        
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        
+        for (int i = 0; i < risk.periodRisks.size(); i++){
+            riskModel.insertRow(riskModel.getRowCount(), new Object[] {
+                    risk.periodRisks.get(i).forwardType,
+                    sdf.format( risk.periodRisks.get(i).startDate ),
+                    sdf.format( risk.periodRisks.get(i).endDate ),
+                    risk.periodRisks.get(i).period,
+                    Math.round( risk.periodRisks.get(i).dailyQuantity * 100) / 100.0,
+                    Math.round( risk.periodRisks.get(i).total * 100) / 100.0
+                });
+        }
+        
+        jTable2.setModel(riskModel);
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
