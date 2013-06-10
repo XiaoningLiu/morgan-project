@@ -93,6 +93,7 @@ public class AvgFloatingPrice {
 		//get JanContractPrice&FebContractPrice
 		if(content.indexOf("<sett>")==-1)
 			return -1;//this date is not recorded in web
+		content=content.substring(content.indexOf("JLY 13"));
 		content=content.substring(content.indexOf("<sett>")+6);
 		double JanContractPrice=
 				Double.parseDouble(content.substring(0, 5));
