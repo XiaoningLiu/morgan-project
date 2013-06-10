@@ -6,7 +6,6 @@ package ui;
 
 import entity.Swap;
 import entity.Trader;
-import java.awt.event.ItemEvent;
 import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.text.ParseException;

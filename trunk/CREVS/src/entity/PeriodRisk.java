@@ -29,7 +29,7 @@ public class PeriodRisk {
         this.dailyQuantity = dailyQuantity;
         
         // 
-        int days = (int) ((endDate.getTime() - startDate.getTime()) / (24 * 3600));
+        int days = (int) ((endDate.getTime() - startDate.getTime()) / (24 * 3600 * 1000)) + 1;
         this.total = days * dailyQuantity;
     }
 }
