@@ -253,6 +253,7 @@ public class RiskView extends javax.swing.JFrame {
     
     private void freshPnlTable(){  
         Pnl pnl = engine.calPnl(swap);
+        pnl.saveToDB(con);
         
         pnlModel.getDataVector().removeAllElements();
         pnlModel.fireTableDataChanged();
@@ -285,7 +286,7 @@ public class RiskView extends javax.swing.JFrame {
                     sdf.format( risk.periodRisks.get(i).endDate ),
                     risk.periodRisks.get(i).period,
                     Math.round( risk.periodRisks.get(i).dailyQuantity * 100) / 100.0,
-                    Math.round( risk.periodRisks.get(i).total * 100) / 100.0
+                    Math.round( risk.periodRisks.get(i).total * 100) / 100.00
                 });
         }
         
