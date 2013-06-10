@@ -21,12 +21,12 @@ import java.util.Locale;
  * @author liuxiaoning
  */
 public class Engine {
-    public static Connection con;
+    private Connection con;
     public Engine(Connection con){
         this.con=con;
     }
     
-    public static Pnl calPnl(Swap swap){
+    public Pnl calPnl(Swap swap){
         //Pnl result=new Pnl(con, swap.tradeId);
         Pnl result=new Pnl();
         
@@ -85,6 +85,7 @@ public class Engine {
             return 2;
     }
     //main for test
+    /*
     public static void main(String[] args) {
         
         //initialize a swap for test
@@ -107,7 +108,7 @@ public class Engine {
         swap.quantity=80;
         
         //test:
-        Pnl PnlTest=calPnl(swap);
+        //Pnl PnlTest= engine.calPnl(swap);
         List<DailyPnl> DailyPnlTest=PnlTest.dailyPnls;
         for(int i=0;i<DailyPnlTest.size();i++)
         {
@@ -126,7 +127,7 @@ public class Engine {
         }
         
     }
-    
+    */
         
     public Risk calRisk(Swap swap){
         Risk risk = new Risk();

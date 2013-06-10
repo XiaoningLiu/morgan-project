@@ -6,6 +6,9 @@ package ui;
 
 import entity.Trader;
 import java.sql.Connection;
+import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -118,7 +121,11 @@ public class Load extends javax.swing.JFrame {
             return;
         } else {
             if (trader.checkPsd(jPasswordField1.getText())){
-                new Trade(con, trader).setVisible(true);
+                try {
+                    new Trade(con, trader).setVisible(true);
+                } catch (ParseException ex) {
+                    Logger.getLogger(Load.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 this.setVisible(false);
             } else {
                 JOptionPane.showMessageDialog(null, "Please check your password", "Notice", JOptionPane.OK_OPTION);
