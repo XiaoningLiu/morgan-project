@@ -1,5 +1,3 @@
-package engine;
-
 import java.util.Calendar;
 import java.util.Vector;
 
@@ -49,11 +47,11 @@ public class AvgFloatingPrice {
 		int result=0;//initialize to 0
 		for(int i=0;i<workdays.length;i++){
 			if(workdays[i]==25){
-				result=workdays[i-5];
+				result=workdays[i-4];
 				break;
 			}
 			else if(workdays[i]>25){
-				result=workdays[i-4];
+				result=workdays[i-5];
 				break;
 			}
 		}
@@ -116,20 +114,24 @@ public class AvgFloatingPrice {
 				former++;
 		
 		if(flag==1)
-                        result=(JanContractPrice*former+FebContractPrice*(workday-former))/workday;
+			System.out.print("("+JanContractPrice
+					+"*"+(former)+"+"+FebContractPrice+"*"
+					+(workday-former)+")/"+workday);
 		if(flag==2)
-                        result=(sumSettlementPrice+JanContractPrice
-					*(former-3)+FebContractPrice*(workday-former))/workday;
+			System.out.print("("+sumSettlementPrice+"+"
+					+JanContractPrice
+					+"*"+(former-3)+"+"+FebContractPrice+"*"
+					+(workday-former)+")/"+workday);
 		
-		result=Math.round(result*100)/100.0; 
+		
 		return result;
 	}
 	
 	//main for test
 	public static void main(String[] args) {
 		//initialize month&year
-		int m=6;
-		int y=2013;
+		int m=12;
+		int y=2006;
 		
 		//find all work days of a month
 		/*
@@ -140,8 +142,8 @@ public class AvgFloatingPrice {
 		 */
 		
 		//test separate
-		//System.out.print("\n"+separate(m,y));
+		System.out.print("\n"+separate(m,y));
 		
-		System.out.print(avgFolatingPrice(7,m,y,2));
+		//avgFolatingPrice(7,m,y,2);
 	}
 }
