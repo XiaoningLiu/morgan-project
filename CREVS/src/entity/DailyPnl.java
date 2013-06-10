@@ -59,8 +59,9 @@ public class DailyPnl {
                 return;
             }
 
-            stmt.executeUpdate("insert into pv values('" + sdf.format(date)
-                    + "'," + this.tradeId + " ," + this.pvToday + ")");
+            String sqlString = "insert into pv values('" + sdf.format(this.date)
+                    + "'," + this.tradeId + " ," + this.pvToday + ")";
+            stmt.executeUpdate(sqlString);
 
             rs.close();
             rs = null;

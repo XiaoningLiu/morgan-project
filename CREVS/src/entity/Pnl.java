@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -82,19 +83,6 @@ public class Pnl {
                 stmt = null;
             }
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 
     public void saveToDB(Connection con){
@@ -102,6 +90,20 @@ public class Pnl {
         for(int i = 0; i < dailyPnls.size(); i++){
             dailyPnls.get(i).saveToDB(con);
         }
+    }
+    
+    public boolean addDailyPnl(DailyPnl dailyPnl){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        for (int i = 0; i < this.dailyPnls.size(); i++){
+            String date = sdf.format(dailyPnls.get(i).date);
+            String newDate = sdf.format(dailyPnl.date);
+            if (date.equals(newDate)){
+                return false;
+            }
+        }
+        
+        dailyPnls.add(dailyPnl);
+        return true;
     }
 
 

@@ -27,8 +27,9 @@ public class Engine {
     }
     
     public Pnl calPnl(Swap swap){
-        //Pnl result=new Pnl(con, swap.tradeId);
-        Pnl result=new Pnl();
+        Pnl result = new Pnl(con, swap.tradeId);
+        //Pnl result=new Pnl();
+        result.tradeId = swap.tradeId;
         
         int least=5;//least repeat time
         Date now=new Date();
