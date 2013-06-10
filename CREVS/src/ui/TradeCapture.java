@@ -401,7 +401,7 @@ public class TradeCapture extends javax.swing.JFrame {
                     m = "01";
      if(smounth.equals("Feb")) 
                     m = "02";
-     if(smounth.equals("May")) 
+     if(smounth.equals("Mar")) 
                     m = "03";
      if(smounth.equals("Apr")) 
                     m = "04";
