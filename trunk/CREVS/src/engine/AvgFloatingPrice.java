@@ -123,8 +123,7 @@ public class AvgFloatingPrice {
                         result=(JanContractPrice*former+FebContractPrice*(workday-former))/workday;
 		if(flag==2){
                     if(parameter1<former)
-                        result=(sumSettlementPrice+JanContractPrice
-					*(former-parameter1)+FebContractPrice*(workday-former))/workday;
+                        result=(sumSettlementPrice+JanContractPrice*(former-parameter1)+FebContractPrice*(workday-former))/workday;
                     else
                         result=(sumSettlementPrice+FebContractPrice*(workday-parameter1))/workday;
 		}
@@ -149,6 +148,6 @@ public class AvgFloatingPrice {
 		//test separate
 		//System.out.print("\n"+separate(m,y));
 		
-		System.out.print(avgFolatingPrice(7,m,y,2));
+		System.out.println(avgFolatingPrice(5,m,y,2));
 	}
 }
