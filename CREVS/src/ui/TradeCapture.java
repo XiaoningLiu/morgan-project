@@ -375,6 +375,13 @@ public class TradeCapture extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Please finish your form!", "Notice", JOptionPane.OK_OPTION);
             return;
             }
+           // if(Double.parseDouble(jTextField4.getText())<=0||Integer.parseInt(jTextField3.getText())<=0)
+           // {
+           //     JOptionPane.showMessageDialog(null, "Please check your input!", "Notice", JOptionPane.OK_OPTION);
+           // return;
+            //}
+            Date today = new Date();
+            
             Swap swap = new Swap();
             swap.traderId = trader.traderId;
             swap.bookingDate = new Date();
@@ -392,6 +399,13 @@ public class TradeCapture extends javax.swing.JFrame {
             swap.startDate = sdf.parse(jComboBox9.getSelectedItem().toString()+"-"+mounth_start+"-01");
             swap.endDate = sdf.parse(jComboBox10.getSelectedItem().toString()+"-"+mounth_end+lastday);
             swap.tradeId = swap.saveToDB(tradecapturecon);
+           // swap.startDate =sdf.parse("2013-06-12");
+            //判断交易时期是否为未来
+            if(!swap.startDate.after(today))
+            {
+                JOptionPane.showMessageDialog(null, "Please check your trade's period !", "Notice", JOptionPane.OK_OPTION);
+            return;
+            }
             
             //triger
             trade.freshTradeTable();

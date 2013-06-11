@@ -101,6 +101,8 @@ public class RiskView extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTable1.setEnabled(false);
+        jTable1.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(jTable1);
 
         jButton1.setText("Update");
@@ -149,6 +151,8 @@ public class RiskView extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTable2.setEnabled(false);
+        jTable2.getTableHeader().setReorderingAllowed(false);
         jScrollPane2.setViewportView(jTable2);
 
         jLabel1.setText("Totle :");
