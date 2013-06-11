@@ -27,8 +27,8 @@ public class Engine {
     }
     
     public Pnl calPnl(Swap swap){
-        Pnl result = new Pnl(con, swap.tradeId);
-        //Pnl result=new Pnl();
+        //Pnl result = new Pnl(con, swap.tradeId);
+        Pnl result=new Pnl();
         result.tradeId = swap.tradeId;
         
         int least=5;//least repeat time
@@ -54,10 +54,15 @@ public class Engine {
 
                 //add DailyPnl to result
                 DailyPnl DP=new DailyPnl(swap.tradeId,now,PV,PV);
-                result.dailyPnls.add(DP);
-
+                
                 //change Pnl in result's dailyPnls
                 int size=result.dailyPnls.size();
+                System.out.println(size);
+                if((!result.addDailyPnl(DP))&&size>1){       
+                    result.dailyPnls.get(size-1).pvYest=PV;
+                    result.dailyPnls.get(size-1).pnl=result.dailyPnls.get(size-1).pvToday-PV;
+                    break;
+                }
                 if(size>1){
                     result.dailyPnls.get(size-2).pvYest=PV;
                     result.dailyPnls.get(size-2).pnl=result.dailyPnls.get(size-2).pvToday-PV;
