@@ -13,6 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -369,6 +370,11 @@ public class TradeCapture extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
+            if(jTextField1.getText().isEmpty()||jTextField4.getText().isEmpty()||jTextField3.getText().isEmpty())
+            {
+                JOptionPane.showMessageDialog(null, "Please finish your form!", "Notice", JOptionPane.OK_OPTION);
+            return;
+            }
             Swap swap = new Swap();
             swap.traderId = trader.traderId;
             swap.bookingDate = new Date();
