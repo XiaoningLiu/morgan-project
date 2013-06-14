@@ -4,7 +4,9 @@
 /*==============================================================*/
 
 drop database if exists crevs;
+
 create database crevs;
+
 use crevs;
 
 drop table if exists forwardprice;
