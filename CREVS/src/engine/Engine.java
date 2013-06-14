@@ -26,6 +26,8 @@ public class Engine {
         this.con=con;
     }
     
+    private DailyPnl tmpDP=new DailyPnl(-1,new Date(),0.0,0.0);
+    
     public Pnl calPnl(Swap swap){
         //Pnl result = new Pnl(con, swap.tradeId);
         Pnl result=new Pnl();
@@ -53,20 +55,17 @@ public class Engine {
                 double PV=bos*(swap.fixedPrice-AFP)*swap.quantity;
 
                 //add DailyPnl to result
-                DailyPnl DP=new DailyPnl(swap.tradeId,now,PV,PV);
+                DailyPnl addDP;
+                if(tmpDP.tradeId==-1)
+                    tmpDP=new DailyPnl(swap.tradeId,now,PV,PV);
+                else
+                {
+                    addDP=new DailyPnl(swap.tradeId,now,PV,tmpDP.pvYest);
+                    tmpDP=addDP;
+                    if(!result.addDailyPnl(addDP))
+                        System.out.println("failed to add dailyPnl!");
+                }
                 
-                //change Pnl in result's dailyPnls
-                int size=result.dailyPnls.size();
-                System.out.println(size);
-                if((!result.addDailyPnl(DP))&&size>1){       
-                    result.dailyPnls.get(size-1).pvYest=PV;
-                    result.dailyPnls.get(size-1).pnl=result.dailyPnls.get(size-1).pvToday-PV;
-                    break;
-                }
-                if(size>1){
-                    result.dailyPnls.get(size-2).pvYest=PV;
-                    result.dailyPnls.get(size-2).pnl=result.dailyPnls.get(size-2).pvToday-PV;
-                }
 
             }
             //go to former day
