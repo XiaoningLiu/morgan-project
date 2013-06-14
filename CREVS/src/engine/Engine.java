@@ -60,8 +60,9 @@ public class Engine {
                     tmpDP=new DailyPnl(swap.tradeId,now,PV,PV);
                 else
                 {
-                    addDP=new DailyPnl(swap.tradeId,now,PV,tmpDP.pvYest);
-                    tmpDP=addDP;
+                    addDP=tmpDP;
+                    addDP.pvYest=PV;
+                    tmpDP=new DailyPnl(swap.tradeId,now,PV,PV);
                     if(!result.addDailyPnl(addDP))
                         System.out.println("failed to add dailyPnl!");
                 }
