@@ -51,7 +51,7 @@ public class Engine {
             if(AFP>0){
                 //use expression to calculate
                 int bos=1;//buy or sell
-                if(swap.buyOrSell.equals("sell"))bos=-1;
+                if(swap.buyOrSell.equals("buy"))bos=-1;
                 double PV=bos*(swap.fixedPrice-AFP)*swap.quantity;
 
                 //add DailyPnl to result
@@ -231,7 +231,7 @@ public class Engine {
         
         int year = cal.get(Calendar.YEAR);
         int mon = cal.get(Calendar.MONTH);
-        int partitionDay = AvgFloatingPrice.separate(mon, year);
+        int partitionDay = AvgFloatingPrice.separate(mon + 1, year);
         
         cal.set(Calendar.DAY_OF_MONTH, partitionDay);
         return cal.getTime();
