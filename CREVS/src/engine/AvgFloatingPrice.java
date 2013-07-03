@@ -93,7 +93,9 @@ public class AvgFloatingPrice {
 		//get JanContractPrice&FebContractPrice
 		if(content.indexOf("<sett>")==-1)
 			return -1;//this date is not recorded in web
-		content=content.substring(content.indexOf("JLY 13"));
+                
+                if(content.indexOf("AUG 4")!=-1)
+                    content=content.substring(content.indexOf("AUG 4"));
 		content=content.substring(content.indexOf("<sett>")+6);
 		double JanContractPrice=
 				Double.parseDouble(content.substring(0, 5));
@@ -149,6 +151,6 @@ public class AvgFloatingPrice {
 		//test separate
 		//System.out.print("\n"+separate(m,y));
 		
-		System.out.println(avgFolatingPrice(5,m,y,2));
+		System.out.println(avgFolatingPrice(1,7,y,2));
 	}
 }

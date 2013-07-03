@@ -29,8 +29,8 @@ public class Engine {
     private DailyPnl tmpDP=new DailyPnl(-1,new Date(),0.0,0.0);
     
     public Pnl calPnl(Swap swap){
-        //Pnl result = new Pnl(con, swap.tradeId);
-        Pnl result=new Pnl();
+        Pnl result = new Pnl(con, swap.tradeId);
+        //Pnl result=new Pnl();
         result.tradeId = swap.tradeId;
         
         int least=5;//least repeat time
