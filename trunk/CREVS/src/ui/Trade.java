@@ -65,7 +65,7 @@ public class Trade extends javax.swing.JFrame {
             // Do something with the Connection
             stmt = con.createStatement();
             rs = stmt.executeQuery("SELECT * FROM swap where traderid='"
-                    + trader.traderId + "'");
+                    + trader.traderId + "' order by bookingdate desc");
             rs = stmt.getResultSet();
 
             while (rs.next()) {
@@ -220,6 +220,7 @@ public class Trade extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTable1.setColumnSelectionAllowed(true);
         jTable1.setEnabled(false);
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -273,7 +274,7 @@ public class Trade extends javax.swing.JFrame {
 
         jMenu2.setText("Trade");
 
-        jMenuItem4.setText("New");
+        jMenuItem4.setText("New Trade");
         jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem4ActionPerformed(evt);

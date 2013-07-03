@@ -373,7 +373,7 @@ public class TradeCapture extends javax.swing.JFrame {
             if(jTextField1.getText().isEmpty()||jTextField4.getText().isEmpty()||jTextField3.getText().isEmpty())
             {
                 JOptionPane.showMessageDialog(null, "Please finish your form!", "Notice", JOptionPane.OK_OPTION);
-            return;
+                return;
             }
            // if(Double.parseDouble(jTextField4.getText())<=0||Integer.parseInt(jTextField3.getText())<=0)
            // {
@@ -383,6 +383,20 @@ public class TradeCapture extends javax.swing.JFrame {
             Date today = new Date();
             
             Swap swap = new Swap();
+            String mounth_start,mounth_end,lastday;
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            mounth_start = stringmounth(jComboBox8.getSelectedItem().toString());    
+            mounth_end = stringmounth(jComboBox11.getSelectedItem().toString());
+            lastday = howmanyday(mounth_end,jComboBox9.getSelectedItem().toString());
+            swap.startDate = sdf.parse(jComboBox9.getSelectedItem().toString()+"-"+mounth_start+"-01");
+            
+            
+            if(!swap.startDate.after(today))
+            {
+                JOptionPane.showMessageDialog(null, "Only future trade will be accepted!", "Notice", JOptionPane.OK_OPTION);
+                return;
+            }
+            
             swap.traderId = trader.traderId;
             swap.bookingDate = new Date();
             swap.buyOrSell = jComboBox1.getSelectedItem().toString();
@@ -390,22 +404,9 @@ public class TradeCapture extends javax.swing.JFrame {
             swap.fixedPrice = Double.parseDouble(jTextField4.getText());
             swap.floatingCode = jComboBox5.getSelectedItem().toString();
             swap.quantity = Integer.parseInt(jTextField3.getText());
-            swap.settleDateSpec = jComboBox6.getSelectedItem().toString();
-            String mounth_start,mounth_end,lastday;
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            mounth_start = stringmounth(jComboBox8.getSelectedItem().toString());    
-            mounth_end = stringmounth(jComboBox11.getSelectedItem().toString());
-            lastday = howmanyday(mounth_end,jComboBox9.getSelectedItem().toString());
-            swap.startDate = sdf.parse(jComboBox9.getSelectedItem().toString()+"-"+mounth_start+"-01");
+            swap.settleDateSpec = jComboBox6.getSelectedItem().toString();     
             swap.endDate = sdf.parse(jComboBox10.getSelectedItem().toString()+"-"+mounth_end+lastday);
-            swap.tradeId = swap.saveToDB(tradecapturecon);
-           // swap.startDate =sdf.parse("2013-06-12");
-            //判断交易时期是否为未来
-            if(!swap.startDate.after(today))
-            {
-                JOptionPane.showMessageDialog(null, "Please check your trade's period !", "Notice", JOptionPane.OK_OPTION);
-            return;
-            }
+            swap.tradeId = swap.saveToDB(tradecapturecon);      
             
             //triger
             trade.freshTradeTable();
