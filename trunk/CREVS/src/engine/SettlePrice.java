@@ -2,7 +2,7 @@ package engine;
 
 
 public class SettlePrice {
-	public static String settlePrice(String m,String y) {
+	public static String settlePrice(String m,String y)  throws java.net.UnknownHostException{
 		//get URL
 		String URL="http://www.cmegroup.com/CmeWS/md/MDServer/V1" +
 				"/Venue/G/Exchange/XNYM/FOI/FUT/Product/CL?" +
@@ -30,6 +30,5 @@ public class SettlePrice {
 	public static void main(String[] args) {
 		//get settle price
 		//take 2020.1 for example
-		System.out.print(settlePrice("1", "2020")+"\n");
 	}
 }

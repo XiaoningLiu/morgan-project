@@ -28,7 +28,7 @@ public class Engine {
     
     private DailyPnl tmpDP=new DailyPnl(-1,new Date(),0.0,0.0);
     
-    public Pnl calPnl(Swap swap){
+    public Pnl calPnl(Swap swap) {
         Pnl result = new Pnl(con, swap.tradeId);
         //Pnl result=new Pnl();
         result.tradeId = swap.tradeId;
@@ -62,18 +62,19 @@ public class Engine {
                 {
                     addDP=tmpDP;
                     addDP.pvYest=PV;
+                    addDP.pnl=addDP.pvToday-addDP.pvYest;
                     tmpDP=new DailyPnl(swap.tradeId,now,PV,PV);
                     if(!result.addDailyPnl(addDP))
-                        System.out.println("failed to add dailyPnl!");
+                        System.out.println("  !!!!!!!!!! ");
                 }
-                
-
             }
             //go to former day
             now=yesterdayDate(now);
             calNow.setTime(now);
         }
-        
+        if(tmpDP.date.getDay()!=Calendar.getInstance().get(Calendar.DATE)){
+            result.addDailyPnl(tmpDP);
+        }
         return result;
     }
     private static Date yesterdayDate(Date date){

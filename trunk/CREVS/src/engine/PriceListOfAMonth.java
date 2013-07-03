@@ -55,9 +55,15 @@ public class PriceListOfAMonth {
 				"&LastDate=" +y+"-"+m+"-"+days(m,y);
 		
 		//get content of the 2 pages
-		String content=PageSpider.reqForGet(URL1)+
+		String content="";
+                try{
+                content=PageSpider.reqForGet(URL1)+
 				PageSpider.reqForGet(URL2);
-
+                    
+                }
+                catch(java.net.UnknownHostException e){
+                    
+                }
 		//get price in String[] price
 		Vector<String> price =new Vector<String>();
 		while(true){
@@ -78,8 +84,9 @@ public class PriceListOfAMonth {
 	public static void main(String[] args) {
 		//test days of a month&year
 		//System.out.print(days(5,2013));
+            /*
 		Vector<String>price=price(5,2013);
 		for(int i=0;i<price.size()/2;i++)
-			System.out.print(price.get(i*2)+"\t"+price.get(i*2+1)+"\n");
+			System.out.print(price.get(i*2)+"\t"+price.get(i*2+1)+"\n");*/
 	}
 }

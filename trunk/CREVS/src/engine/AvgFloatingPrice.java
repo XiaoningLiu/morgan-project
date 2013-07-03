@@ -71,7 +71,7 @@ public class AvgFloatingPrice {
 	 * 1:	Before pricing start date
 	 * 2:	After pricing start date 
 	 */
-	public static double avgFolatingPrice(int d,int m,int y,int flag){
+	public static double avgFolatingPrice(int d,int m,int y,int flag) {
 		double result=0;
 		
 		//get content of the URL
@@ -88,7 +88,13 @@ public class AvgFloatingPrice {
 				"V1/DSReport/ProductCode/CL/FOI/FUT/EXCHANGE/XNYM/" +
 				"Underlying/CL/ProductId/425" +
 				"?tradeDate="+mm+"/"+dd+"/"+yy;
-		String content=PageSpider.reqForGet(URL);
+		String content="";
+                try{
+                content=PageSpider.reqForGet(URL);
+                }
+                catch(java.net.UnknownHostException e){
+                    return 0;
+                }
 		
 		//get JanContractPrice&FebContractPrice
 		if(content.indexOf("<sett>")==-1)
@@ -151,6 +157,5 @@ public class AvgFloatingPrice {
 		//test separate
 		//System.out.print("\n"+separate(m,y));
 		
-		System.out.println(avgFolatingPrice(1,7,y,2));
 	}
 }
